@@ -18,6 +18,6 @@ node {
 
     stage('Test') {
         echo 'Testing run in local'
-        sh 'docker run -d --name test_hello -p 8888:80 hello_aws'
+        sh 'docker run -d --name test_hello -p 8888:80 marieme21/hello_aws'
     }
 }
