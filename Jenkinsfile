@@ -15,7 +15,7 @@ node {
 
     stage('Test') {
         echo 'Testing run in local'
-        def customImage = docker.build("hello_aws:latest")
+        sh 'docker run -d --name test_hello -p 8888:80 hello_aws'
     }
 
     stage('Push') {
