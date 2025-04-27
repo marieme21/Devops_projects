@@ -1,5 +1,5 @@
 node {
-	
+
     // Define variables
     def customImage
     def dockerHubCreds = 'Docker_hub_cred'  // Your Jenkins credentials ID
@@ -9,21 +9,15 @@ node {
         checkout scm
     }
 
-    stage('Build') {
-        echo 'Building the image...'
-        customImage = docker.build("hello_aws")
+    stage('Build and Push') {
+        docker.withRegistry('https://registry.hub.docker.com', dockerHubCreds) {
+            customImage = docker.build("hello_aws:latest")
+            customImage.push('latest')
+        }
     }
 
     stage('Test') {
         echo 'Testing run in local'
         sh 'docker run -d --name test_hello -p 8888:80 hello_aws'
     }
-
-    stage('Push') {
-
-        docker.withRegistry('https://registry.hub.docker.com/marieme21', dockerHubCreds) {
-            customImage.push('latest')
-        }
-    }
-
 }
