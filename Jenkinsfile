@@ -16,10 +16,8 @@ node {
     }
 
     stage('Push des images sur Docker Hub') {
-        steps {
-            withDockerRegistry([credentialsId: 'Docker_hub_cred', url: 'https://index.docker.io/v1/']) {
-                sh 'docker push hello_aws:latest'
-            }
+    	withDockerRegistry([credentialsId: 'Docker_hub_cred', url: 'https://index.docker.io/v1/']) {
+		sh 'docker push hello_aws:latest'
         }
     }
 
