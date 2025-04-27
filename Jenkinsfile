@@ -1,6 +1,7 @@
 node {
-
+	
     // Define variables
+    def customImage
     def dockerHubCreds = 'Docker_hub_cred'  // Your Jenkins credentials ID
 
     stage('Checkout Code') {
@@ -10,7 +11,7 @@ node {
 
     stage('Build') {
         echo 'Building the image...'
-        def customImage = docker.build("hello_aws:latest")
+        customImage = docker.build("hello_aws:latest")
     }
 
     stage('Test') {
