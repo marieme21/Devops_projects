@@ -11,7 +11,7 @@ node {
 
     stage('Build') {
         echo 'Building the image...'
-        customImage = docker.build("marieme21/hello_aws")
+        customImage = docker.build("hello_aws")
     }
 
     stage('Test') {
@@ -21,7 +21,7 @@ node {
 
     stage('Push') {
 
-        docker.withRegistry('https://registry.hub.docker.com', dockerHubCreds) {
+        docker.withRegistry('https://registry.hub.docker.com/marieme21', dockerHubCreds) {
             customImage.push('latest')
         }
     }
