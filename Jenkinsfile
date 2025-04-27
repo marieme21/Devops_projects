@@ -10,8 +10,9 @@ node {
     
     stage('Test Deployment') {
         sh 'docker run -d --name test_hello -p 8888:80 hello_aws'
-        sh 'docker stop test_hello && docker rm test_hello'
-        sh 'docker rmi hello_aws'
+        //sh 'docker stop test_hello'
+	//sh 'docker rm test_hello'
+        //sh 'docker rmi hello_aws'
     }
 
     stage('Push des images sur Docker Hub') {
