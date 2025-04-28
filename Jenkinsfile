@@ -10,12 +10,17 @@ pipeline {
     }
 
     stages {
-
+        stage('Cloner le dépôt') {
+            steps {
+                git branch: 'Main',
+                url: 'https://github.com/mormbathie/projetfilerougedock.git'
+            }
+        }
         stage('Build des images') {
             steps {
-                sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
-                sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
-                sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
+                sh 'docker build -t $BACKEND_IMAGE:latest Backend/odc'
+                sh 'docker build -t $FRONTEND_IMAGE:latest Frontend'
+                sh 'docker build -t $MIGRATE_IMAGE:latest Backend/odc'
             }
         }
 
@@ -53,3 +58,4 @@ pipeline {
         }
     }
 }
+
