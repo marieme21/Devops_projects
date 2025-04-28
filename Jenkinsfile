@@ -10,12 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Cloner le dépôt') {
-            steps {
-                git branch: 'main',
-                url: 'https://github.com/marieme21/Jenkins_projects'
-            }
-        }
+
         stage('Build des images') {
             steps {
                 sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
