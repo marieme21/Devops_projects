@@ -18,9 +18,9 @@ pipeline {
         }
         stage('Build des images') {
             steps {
-                sh 'docker build -t $BACKEND_IMAGE:latest Backend/odc'
+                sh 'docker build -t $BACKEND_IMAGE:latest Backend'
                 sh 'docker build -t $FRONTEND_IMAGE:latest Frontend'
-                sh 'docker build -t $MIGRATE_IMAGE:latest Backend/odc'
+                sh 'docker build -t $MIGRATE_IMAGE:latest Backend'
             }
         }
 
