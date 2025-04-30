@@ -12,7 +12,7 @@ pipeline {
         stage('Cloner le dépôt') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/marieme21/Jenkins_projects.git'
+                url: 'git@github.com:marieme21/Jenkins_projects.git'
             }
         }
         stage('Build des images') {
