@@ -11,9 +11,12 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/marieme21/Jenkins_projects.git'
-            }
+                git(
+                    url: 'https://github.com/marieme21/Jenkins_projects.git',
+                    credentialsId: 'git_jenkinsID', // Add this line
+                    branch: 'main'
+                )
+              }
         }
         stage('Build des images') {
             steps {
