@@ -26,12 +26,15 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-            steps{
-                withSonarQubeEnv() { // Will pick the global server connection you have configured
-                    sh './gradlew sonar'
-                }
-            }
-        }
+            steps {
+                script {
+                    scannerHome = tool 'SonarScanner'// must match the name of an actual scanner installation directory on your Jenkins build agent
+                }
+                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
         stage('Push des images sur Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker_hub_creds', url: '']) {
