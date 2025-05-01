@@ -25,7 +25,11 @@ pipeline {
                 sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
             }
         }
-
+        stage('SonarQube analysis') {
+            withSonarQubeEnv() { // Will pick the global server connection you have configured
+                sh './gradlew sonar'
+            }
+        }
         stage('Push des images sur Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker_hub_creds', url: '']) {
