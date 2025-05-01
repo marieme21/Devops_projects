@@ -49,7 +49,9 @@ pipeline {
                         -Dsonar.projectKey=Backend \
                         -Dsonar.sources=Backend \
                         -Dsonar.language=py \
-                        -Dsonar.python.exclusions=**/migrations/**
+                        -Dsonar.python.exclusions=**/migrations/**,**/venv/**,**/site-packages/**
+
+
                     """
                 }
             }
