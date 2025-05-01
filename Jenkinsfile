@@ -45,12 +45,12 @@ pipeline {
                 // Run SonarScanner for Django (Python)
                 withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
                     sh """
+                        export SONAR_SCANNER_OPTS="-Xmx2048m -Xms1024m"
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=Backend \
                         -Dsonar.sources=Backend \
                         -Dsonar.language=py \
                         -Dsonar.python.exclusions=**/migrations/**,**/venv/**,**/site-packages/** \
-                        -Xmx2048m -Xms1024m
                     """
                 }
             }
