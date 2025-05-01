@@ -35,6 +35,7 @@ pipeline {
                 // Run SonarScanner for React (JavaScript)
                 withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
                     sh """
+                        export SONAR_SCANNER_OPTS="-Xmx2048m -Xms1024m"
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=Frontend \
                         -Dsonar.sources=./Frontend/src \
