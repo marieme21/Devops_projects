@@ -32,8 +32,25 @@ pipeline {
                 script {
                     scannerHome = tool 'SonarScanner'// must match the name of an actual scanner installation directory on your Jenkins build agent
                 }
+                // Run SonarScanner for React (JavaScript)
                 withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=Frontend \
+                        -Dsonar.sources=./Frontend/src \
+                        -Dsonar.language=js \
+                        -Dsonar.javascript.exclusions=**/node_modules/**
+                    """
+                }
+                // Run SonarScanner for Django (Python)
+                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
+                    sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=Backend \
+                        -Dsonar.sources=Backend \
+                        -Dsonar.language=py \
+                        -Dsonar.python.exclusions=**/migrations/**
+                    """
                 }
             }
         }
