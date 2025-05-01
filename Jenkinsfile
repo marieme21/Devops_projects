@@ -9,7 +9,7 @@ pipeline {
     }
 
     stages {
-        stage('Cloner le dépôt') {
+        stage('Clone') {
             steps {
                 git(
                     url: 'https://github.com/marieme21/Jenkins_projects.git',
@@ -18,13 +18,15 @@ pipeline {
                 )
               }
         }
-        stage('Build des images') {
+        
+        stage('Build') {
             steps {
                 sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
                 sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
                 sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
             }
         }
+        
         stage('SonarQube analysis') {
             steps {
                 script {
@@ -35,7 +37,8 @@ pipeline {
                 }
             }
         }
-        stage('Push des images sur Docker Hub') {
+        
+        stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker_hub_creds', url: '']) {
                     sh 'docker push $BACKEND_IMAGE:latest'
