@@ -18,15 +18,7 @@ pipeline {
                 )
               }
         }
-        
-        stage('Build') {
-            steps {
-                sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
-                sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
-                sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
-            }
-        }
-        
+
         stage('SonarQube analysis') {
             steps {
                 script {
@@ -54,6 +46,15 @@ pipeline {
                 }
             }
         }
+        
+        stage('Build') {
+            steps {
+                sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
+                sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
+                sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
+            }
+        }
+        
         
         stage('Push images to Docker Hub') {
             steps {
