@@ -31,7 +31,7 @@ pipeline {
                         -Dsonar.projectKey=Frontend \
                         -Dsonar.sources=./Frontend/src \
                         -Dsonar.language=js \
-                        -Dsonar.javascript.exclusions=**/node_modules/**
+                        -Dsonar.exclusions=**/node_modules/**
                     """
                 }
                 // Run SonarScanner for Django (Python)
@@ -41,7 +41,7 @@ pipeline {
                         -Dsonar.projectKey=Backend \
                         -Dsonar.sources=Backend \
                         -Dsonar.language=py \
-                        -Dsonar.python.exclusions=**/migrations/**,**/venv/**,**/site-packages/**,**/__pycache__/**,**/*.pyc,**/dist/**,**/build/** \
+                        -Dsonar.exclusions="**/migrations/**,**/venv/**,**/site-packages/**,**/__pycache__/**,**/*.pyc,**/dist/**,**/build/**"
                     """
                 }
             }
