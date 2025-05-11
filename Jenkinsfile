@@ -66,13 +66,23 @@ pipeline {
             }
         }
 
-        stage('Déploiement local avec Docker Compose') {
+        stage('Déploiement sur Kubernetes') {
+            steps {
+                sh '''
+                    microk8s kubectl apply -f k8s/postgres-deployment.yaml
+                    microk8s kubectl apply -f k8s/backend-deployment.yaml
+                    microk8s kubectl apply -f k8s/frontend-deployment.yaml
+                '''
+            }
+        }
+
+        /*stage('Déploiement local avec Docker Compose') {
             steps {
                 sh 'docker compose down || true'
                 sh 'docker compose pull'
                 sh 'docker compose up -d --build'
             }
-        }
+        }*/
     }
     post {
         success {
