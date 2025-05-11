@@ -69,9 +69,9 @@ pipeline {
         stage('Déploiement sur Kubernetes') {
             steps {
                 sh '''
-                    minikube kubectl apply -f k8s/postgres-deployment.yaml
-                    minikube kubectl apply -f k8s/backend-deployment.yaml
-                    minikube kubectl apply -f k8s/frontend-deployment.yaml
+                    /usr/local/bin/minikube kubectl apply -f k8s/postgres-deployment.yaml
+                    /usr/local/bin/minikube kubectl apply -f k8s/backend-deployment.yaml
+                    /usr/local/bin/minikube kubectl apply -f k8s/frontend-deployment.yaml
                 '''
             }
         }
