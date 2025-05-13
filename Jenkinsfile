@@ -66,7 +66,7 @@ pipeline {
             }
         }
 
-        stage('Déploiement sur Kubernetes') {
+        /*stage('Déploiement sur Kubernetes') {
             steps {
                 sh '''
                     minikube kubectl -- apply -f k8s/postgres-deployment.yaml
