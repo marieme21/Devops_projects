@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'odc_db',
         'USER': 'postgres',
         'PASSWORD': 'zou123',
-        'HOST': 'db',
+        'HOST': 'postgres-service',
         'PORT': '5432',
     }
 }
