@@ -19,33 +19,7 @@ pipeline {
               }
         }
 
-        /*stage('SonarQube analysis') {
-            steps {
-                script {
-                    scannerHome = tool 'SonarScanner'// must match the name of an actual scanner installation directory on your Jenkins build agent
-                }
-                // Run SonarScanner for React (JavaScript)
-                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=Frontend \
-                        -Dsonar.sources=./Frontend/src \
-                        -Dsonar.language=js \
-                        -Dsonar.exclusions=**/node_modules/**
-                    """
-                }
-                // Run SonarScanner for Django (Python)
-                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=Backend \
-                        -Dsonar.sources=Backend \
-                        -Dsonar.language=py \
-                        -Dsonar.exclusions="**/migrations/**,**/venv/**,**/site-packages/**,**/__pycache__/**,**/*.pyc,**/dist/**,**/build/**"
-                    """
-                }
-            }
-        }*/
+        
         
         stage('Build') {
             steps {
