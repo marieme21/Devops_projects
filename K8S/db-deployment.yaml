@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment  # Changed from StatefulSet
+metadata:
+  name: postgres
+spec:
+  replicas: 1  # For development (use 2+ for production with persistent volumes)
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14-alpine
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "zou123"
+        - name: POSTGRES_DB
+          value: "odc_db"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        emptyDir: {}  # Temporary storage (replace with PersistentVolume for production)
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  # Removed 'clusterIP: None' (not needed for Deployment)
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+
+                      
