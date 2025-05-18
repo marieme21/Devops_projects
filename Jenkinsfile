@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        terraform 'terraform'  # Must match tool name in Jenkins
+        terraform 'terraform'  // Must match tool name in Jenkins
     }
     
     environment {
