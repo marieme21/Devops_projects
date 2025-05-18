@@ -48,14 +48,13 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 script{
-                    sh 'mkdir -p ~/.kube'
-                    // 1. Copy kubeconfig securely (from Jenkins credentials)
-                    withCredentials([file(credentialsId: 'k8s-kubeconfig', variable: 'KUBECONFIG')]) {
-                        sh '''
-                            cp $KUBECONFIG ~/.kube/config
-                            chmod 600 ~/.kube/config
-                        '''
-                    }
+                    // 1. Ensure certificates are accessible
+                    sh '''
+                    mkdir -p ~/.minikube
+                    cp ${WORKSPACE}/minikube-certs/client.* ~/.minikube/profiles/minikube/
+                    cp ${WORKSPACE}/minikube-certs/ca.crt ~/.minikube/
+                    chmod 600 ~/.minikube/profiles/minikube/client.*
+                    '''
                     // 2. Initialize & apply Terraform
                     dir('terraform') {
                         sh '''
