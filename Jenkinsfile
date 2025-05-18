@@ -50,10 +50,10 @@ pipeline {
                 script{
                     // 1. Ensure certificates are accessible
                     sh '''
-                    mkdir -p ~/.minikube
-                    cp ${WORKSPACE}/minikube-certs/client.* ~/.minikube/profiles/minikube/
-                    cp ${WORKSPACE}/minikube-certs/ca.crt ~/.minikube/
-                    chmod 600 ~/.minikube/profiles/minikube/client.*
+                    sudo mkdir -p /var/lib/jenkins/.minikube/profiles/minikube
+                    sudo unzip /tmp/minikube-certs.zip -d /var/lib/jenkins/.minikube/
+                    sudo chown -R jenkins:jenkins /var/lib/jenkins/.minikube
+                    sudo chmod 600 /var/lib/jenkins/.minikube/profiles/minikube/client.*
                     '''
                     // 2. Initialize & apply Terraform
                     dir('terraform') {
