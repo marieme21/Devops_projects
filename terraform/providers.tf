@@ -1,13 +1,8 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-      version = "2.23.0"
-    }
-  }
-}
-
-# Connect to REMOTE Kubernetes cluster
 provider "kubernetes" {
-  config_path = "~/.kube/config"  # File copied from your K8s VM
+  host     = "https://$(minikube ip):8443"
+  insecure = true  # Only for local development!
+  
+  client_certificate     = file("~/.minikube/profiles/minikube/client.crt")
+  client_key             = file("~/.minikube/profiles/minikube/client.key")
+  cluster_ca_certificate = file("~/.minikube/ca.crt")
 }
