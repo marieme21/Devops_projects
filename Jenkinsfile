@@ -6,6 +6,8 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
+        // Path to kubeconfig copied from remote K8s VM
+        KUBECONFIG = "${WORKSPACE}/.kube/config" 
     }
 
     stages {
@@ -19,33 +21,6 @@ pipeline {
               }
         }
 
-        stage('SonarQube analysis') {
-            steps {
-                script {
-                    scannerHome = tool 'SonarScanner'// must match the name of an actual scanner installation directory on your Jenkins build agent
-                }
-                // Run SonarScanner for React (JavaScript)
-                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=Frontend \
-                        -Dsonar.sources=./Frontend/src \
-                        -Dsonar.language=js \
-                        -Dsonar.exclusions=**/node_modules/**
-                    """
-                }
-                // Run SonarScanner for Django (Python)
-                withSonarQubeEnv('SonarServer') {// If you have configured more than one global server connection, you can specify its name as configured in Jenkins
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=Backend \
-                        -Dsonar.sources=Backend \
-                        -Dsonar.language=py \
-                        -Dsonar.exclusions="**/migrations/**,**/venv/**,**/site-packages/**,**/__pycache__/**,**/*.pyc,**/dist/**,**/build/**"
-                    """
-                }
-            }
-        }
         
         stage('Build') {
             steps {
@@ -66,13 +41,23 @@ pipeline {
             }
         }
 
-        /*stage('Déploiement sur Kubernetes') {
+        stage('Déploiement sur Kubernetes avec terraform') {
             steps {
-                sh '''
-                    minikube kubectl -- apply -f k8s/postgres-deployment.yaml
-                    minikube kubectl -- apply -f k8s/backend-deployment.yaml
-                    minikube kubectl -- apply -f k8s/frontend-deployment.yaml
-                '''
+                script{
+                    // 1. Copy kubeconfig securely (from Jenkins credentials)
+                    withCredentials([file(credentialsId: 'k8s-kubeconfig', variable: 'KUBECONFIG']) {
+                        sh 'cp $KUBECONFIG ${WORKSPACE}/.kube/config'
+                    }
+                    // 2. Initialize & apply Terraform
+                    dir('terraform') {
+                        sh '''
+                        terraform init
+                        terraform apply -auto-approve
+                        '''
+                    }
+                    // 3. Verify deployment
+                    sh 'kubectl get pods -o wide'
+                }
             }
         }
 
@@ -95,5 +80,8 @@ pipeline {
                  subject: "❌ Échec du pipeline Jenkins",
                  body: "Une erreur s’est produite, merci de vérifier Jenkins."
         }
+        always {
+        sh 'rm -rf ${WORKSPACE}/.kube'  // Remove kubeconfig
+    }
     }
 }
