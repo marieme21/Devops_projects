@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script{
                     // 1. Copy kubeconfig securely (from Jenkins credentials)
-                    withCredentials([file(credentialsId: 'k8s-kubeconfig', variable: 'KUBECONFIG']) {
+                    withCredentials([file(credentialsId: 'k8s-kubeconfig', variable: 'KUBECONFIG')]) {
                         sh 'cp $KUBECONFIG ${WORKSPACE}/.kube/config'
                     }
                     // 2. Initialize & apply Terraform
