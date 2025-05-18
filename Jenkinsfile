@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        terraform 'terraform'  # Must match tool name in Jenkins
+    }
+    
     environment {
         DOCKER_USER = 'marieme21'
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
