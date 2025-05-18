@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: django
+        image: marieme21/projetfilrouge_backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgres://postgres:zou123@postgres-service/odc_db"
+        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service  # This matches the name your Ingress expects
+  namespace: default
+spec:
+  selector:
+    app: backend  # This must match your Deployment's pod labels
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000       # External port the service exposes
+      targetPort: 8000
+      nodePort: 30083  # Matches your Django containerPort
+  type: NodePort    # Default type, only accessible within cluster
