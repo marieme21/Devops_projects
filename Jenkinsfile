@@ -44,10 +44,12 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 script{
+                    sh 'mkdir -p ${WORKSPACE}/.kube'
                     // 1. Copy kubeconfig securely (from Jenkins credentials)
                     withCredentials([file(credentialsId: 'k8s-kubeconfig', variable: 'KUBECONFIG')]) {
                         sh 'cp $KUBECONFIG ${WORKSPACE}/.kube/config'
                     }
+                    sh 'chmod 600 ${WORKSPACE}/.kube/config'
                     // 2. Initialize & apply Terraform
                     dir('terraform') {
                         sh '''
