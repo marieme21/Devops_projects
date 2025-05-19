@@ -11,7 +11,7 @@ pipeline {
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
         // Set your Minikube host IP manually
-        MINIKUBE_IP = "192.168.142.129"
+        MINIKUBE_IP = "192.168.49.2"
 
     }
 
@@ -48,12 +48,12 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 script{
-                    // 1. Ensure certificates are accessible
+                    /*/ 1. Ensure certificates are accessible
                     sh '''
                     mkdir -p ~/.kube
                     cp /var/lib/jenkins/.minikube/config ~/.kube/config
                     '''
-                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()
+                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()*/
             
                     // 2. Initialize & apply Terraform
                     dir('terraform') {
