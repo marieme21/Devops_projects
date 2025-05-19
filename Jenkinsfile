@@ -10,8 +10,9 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
-        // Path to kubeconfig copied from remote K8s VM
-        KUBECONFIG = "${WORKSPACE}/.kube/config" 
+        // Set your Minikube host IP manually
+        MINIKUBE_IP = "192.168.142.129"
+
     }
 
     stages {
@@ -24,8 +25,7 @@ pipeline {
                 )
               }
         }
-
-        
+ 
         stage('Build') {
             steps {
                 sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
