@@ -55,11 +55,13 @@ pipeline {
                     sudo chown -R jenkins:jenkins /var/lib/jenkins/.minikube
                     sudo chmod 600 /var/lib/jenkins/.minikube/profiles/minikube/client.*
                     '''
+                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()
+            
                     // 2. Initialize & apply Terraform
                     dir('terraform') {
                         sh '''
                         terraform init
-                        terraform apply -auto-approve
+                        terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                         '''
                     }
                     // 3. Verify deployment
