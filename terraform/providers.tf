@@ -1,5 +1,5 @@
 provider "kubernetes" {
-  host = "https://$(var.minikube ip):8443"
+  host = "https://$(minikube ip):8443"
   insecure_skip_tls_verify = true  // Only for development!
   
   # Load certs from Minikube's standard location
