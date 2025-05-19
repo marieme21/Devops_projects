@@ -1,6 +1,9 @@
 provider "kubernetes" {
-  host                   = "https://${var.minikube_ip}:8443"
-  client_certificate     = file("/var/lib/jenkins/.minikube/profiles/minikube/client.crt")
-  client_key             = file("/var/lib/jenkins/.minikube/profiles/minikube/client.key") 
-  cluster_ca_certificate = file("/var/lib/jenkins/.minikube/ca.crt")
+  host = "https://$(var.minikube ip):8443"
+  insecure_skip_tls_verify = true  // Only for development!
+  
+  # Load certs from Minikube's standard location
+  client_certificate     = file("~/.minikube/profiles/minikube/client.crt")
+  client_key             = file("~/.minikube/profiles/minikube/client.key") 
+  cluster_ca_certificate = file("~/.minikube/ca.crt")
 }
