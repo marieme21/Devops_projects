@@ -48,14 +48,17 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 script{
-                    /*/ 1. Ensure certificates are accessible
-                    sh '''
-                    mkdir -p ~/.kube
-                    cp /var/lib/jenkins/.minikube/config ~/.kube/config
-                    '''
-                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()*/
-            
-                    // 2. Initialize & apply Terraform
+                     // Get Docker-driven Minikube IP
+                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()
+                    
+                    // Verify connectivity
+                    sh """
+                    kubectl config view
+                    echo "Testing connection to Minikube..."
+                    curl -k https://${MINIKUBE_IP}:8443/version
+                    """
+                    
+                    // Run Terraform
                     dir('terraform') {
                         sh '''
                         terraform init
