@@ -50,10 +50,8 @@ pipeline {
                 script{
                     // 1. Ensure certificates are accessible
                     sh '''
-                    mkdir -p /var/lib/jenkins/.minikube/profiles/minikube
-                    unzip -o /tmp/minikube-certs.zip -d /var/lib/jenkins/.minikube/
-                    chown -R jenkins:jenkins /var/lib/jenkins/.minikube
-                    chmod 600 /var/lib/jenkins/.minikube/profiles/minikube/client.*
+                    mkdir -p ~/.kube
+                    cp /var/lib/jenkins/.minikube/config ~/.kube/config
                     '''
                     MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()
             
