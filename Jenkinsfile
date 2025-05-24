@@ -11,7 +11,7 @@ pipeline {
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
         // Set your Minikube host IP manually
-        MINIKUBE_IP = "192.168.49.2"
+        MINIKUBE_IP = "192.168.142.129"
 
     }
 
@@ -48,19 +48,20 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 script{
-                     // Get Docker-driven Minikube IP
-                    MINIKUBE_IP = sh(script: 'minikube ip', returnStdout: true).trim()
                     
                     // Verify connectivity
                     sh """
                     kubectl config view
                     echo "Testing connection to Minikube..."
-                    curl -k https://${MINIKUBE_IP}:8443/version
+                    kubectl config set-cluster minikube-remote --server=http://${MINIKUBE_IP}:8001
+                    kubectl config set-context minikube-remote --cluster=minikube-remote --user=minikube
+                    kubectl config use-context minikube-remote
                     """
                     
                     // Run Terraform
                     dir('terraform') {
                         sh '''
+                        ssh marieme@${MINIKUBE_IP}
                         terraform init
                         '''
                         //terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
