@@ -35,7 +35,7 @@ pipeline {
         }
         
         
-        stage('Push images to Docker Hub') {
+        /*stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker_hub_creds', url: '']) {
                     sh 'docker push $BACKEND_IMAGE:latest'
@@ -43,7 +43,7 @@ pipeline {
                     sh 'docker push $MIGRATE_IMAGE:latest'
                 }
             }
-        }
+        }*/
 
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
@@ -62,8 +62,8 @@ pipeline {
                     dir('terraform') {
                         sh '''
                         terraform init
-                        terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                         '''
+                        //terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                     }
                     // 3. Verify deployment
                     sh 'kubectl get pods -o wide'
