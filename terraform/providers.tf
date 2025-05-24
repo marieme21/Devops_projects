@@ -5,7 +5,7 @@ provider "kubernetes" {
   insecure_skip_tls_verify = true
   
   # Certificate paths (Docker driver specific)
-  client_certificate     = file("~/.minikube/profiles/minikube/client.crt")
-  client_key             = file("~/.minikube/profiles/minikube/client.key")
-  cluster_ca_certificate = file("~/.minikube/ca.crt")
+  client_certificate     = file(".minikube/profiles/minikube/client.crt")
+  client_key             = file(".minikube/profiles/minikube/client.key")
+  cluster_ca_certificate = file(".minikube/ca.crt")
 }
