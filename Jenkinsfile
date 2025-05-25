@@ -60,7 +60,7 @@ pipeline {
 
         stage('Postgres DB migration') {
             steps {
-                scrpt{
+                script{
                     dir('ansible') {
                         sh ''' 
                             ansiblePlaybook(credentialsId: 'minikube-ssh-key', inventory: 'inventories/a/hosts', playbook: 'django-migration-job.yml')
