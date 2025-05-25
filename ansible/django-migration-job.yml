@@ -1,5 +1,5 @@
 ---
-- hosts: 192.168.142.129:8001
+- hosts: minikube
   vars:
     # Customize these variables
     DJANGO_IMAGE: "your-django-image:latest"  # Replace with your Django image
