@@ -51,7 +51,7 @@ pipeline {
                     sh '''
                         echo "--- Testing SSH Key ---"
                         ssh-add -L || ssh-add -l
-                        ssh -T -v marieme@192.168.142.129 || true
+                        ssh -vvv marieme@192.168.142.129 "minikube status"
                     '''
                     /*# Test key loading
                     ssh-add -l
