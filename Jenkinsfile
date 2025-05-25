@@ -49,7 +49,9 @@ pipeline {
             steps {
                 sshagent(['minikube-ssh-key']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no user@host "your-remote-command"
+                        echo "--- Testing SSH Key ---"
+                        ssh-add -L || ssh-add -l
+                        ssh -T -v marieme@192.168.142.129 || true
                     '''
                     /*# Test key loading
                     ssh-add -l
