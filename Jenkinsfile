@@ -11,7 +11,6 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
-        PATH = "/var/lib/jenkins/.local/bin:${env.PATH}"
         // Set your Minikube host IP manually
         MINIKUBE_IP = "192.168.142.129"
 
