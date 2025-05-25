@@ -1,6 +1,6 @@
 ---
 - hosts: minikube
-  become: yes
+  become: false
   vars:
     # Customize these variables
     DJANGO_IMAGE: "your-django-image:latest"  # Replace with your Django image
