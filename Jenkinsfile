@@ -53,31 +53,20 @@ pipeline {
                         terraform init
                         terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                         '''
-                        //terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                     }
                 }
-                /*script{
-                    
-                    // Verify connectivity
-                    sh """
-                    kubectl config view
-                    echo "Testing connection to Minikube..."
-                    kubectl config set-cluster minikube-remote --server=http://${MINIKUBE_IP}:8001
-                    kubectl config set-context minikube-remote --cluster=minikube-remote --user=minikube
-                    kubectl config use-context minikube-remote
-                    """*
-                    
-                    // Run Terraform
-                    dir('terraform') {
+            }
+        }
+
+        stage('Postgres DB migration') {
+            steps {
+                sshagent(['minikube-ssh-key']) {
+                    dir('ansible') {
                         sh '''
-                        ssh marieme@${MINIKUBE_IP}
-                        terraform init
+                            ansible-playbook django-migration-job.yml
                         '''
-                        //terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
                     }
-                    // 3. Verify deployment
-                    sh 'kubectl get pods -o wide'
-                }*/
+                }
             }
         }
 
