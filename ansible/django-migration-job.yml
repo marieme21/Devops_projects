@@ -13,6 +13,7 @@
     - name: Create Kubernetes Job for Django migrations
       community.kubernetes.k8s:
         kubeconfig: "~/.kube/config"  # Minikube config path
+        namespace: default
         state: present
         definition:
           apiVersion: batch/v1
