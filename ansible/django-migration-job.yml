@@ -15,7 +15,7 @@
         pod: "postgres-*"  # Match your Postgres pod name
         command: "pg_isready -U {{ POSTGRES_USER }} -h {{ POSTGRES_SERVICE }}"
       register: pg_ready
-      until: "'accepting connections' in pg_ready.stdout"
+      until: pg_ready.stdout == POSTGRES_SERVICE + ":5432 - accepting connections"
       retries: 10
       delay: 5
     
