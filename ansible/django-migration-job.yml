@@ -1,0 +1,55 @@
+---
+- hosts: 192.168.142.129:8001
+  vars:
+    # Customize these variables
+    DJANGO_IMAGE: "your-django-image:latest"  # Replace with your Django image
+    POSTGRES_SERVICE: "postgres-service"      # Matches your Service name
+    POSTGRES_DB: "odc_db"                    # From your manifest
+    POSTGRES_USER: "postgres"                # From your manifest
+    POSTGRES_PASSWORD: "zou123"              # From your manifest
+
+  tasks:
+    - name: Create Kubernetes Job for Django migrations
+      community.kubernetes.k8s:
+        kubeconfig: "~/.kube/config"  # Minikube config path
+        state: present
+        definition:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: django-migrate-{{ ansible_date_time.epoch }}  # Unique name
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: django
+                    image: "{{ DJANGO_IMAGE }}"
+                    command: ["/bin/sh", "-c"]
+                    args:
+                      - >
+                        python manage.py migrate --no-input &&
+                        echo "Migrations completed successfully"
+                    env:
+                      - name: DATABASE_URL
+                        value: "postgresql://{{ POSTGRES_USER }}:{{ POSTGRES_PASSWORD }}@{{ POSTGRES_SERVICE }}/{{ POSTGRES_DB }}"
+                      # Add other Django settings as env vars if needed
+                restartPolicy: Never
+            backoffLimit: 2  # Retry twice on failure
+
+    - name: Wait for Job completion
+      community.kubernetes.k8s_info:
+        kubeconfig: "~/.kube/config"
+        kind: Job
+        name: "django-migrate-{{ ansible_date_time.epoch }}"
+      register: job_status
+      until: job_status.resources[0].status.succeeded == 1
+      retries: 10
+      delay: 10  # Check every 10 seconds (max 100s wait)
+
+    - name: Delete the Job after completion
+      community.kubernetes.k8s:
+        kubeconfig: "~/.kube/config"
+        state: absent
+        kind: Job
+        name: "django-migrate-{{ ansible_date_time.epoch }}"
+      when: job_status.resources[0].status.succeeded == 1
