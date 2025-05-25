@@ -3,7 +3,7 @@
   become: false
   vars:
     # Customize these variables
-    DJANGO_IMAGE: "your-django-image:latest"  # Replace with your Django image
+    DJANGO_IMAGE: "marieme21/projetfilrouge_backend:latest"  # Replace with your Django image
     POSTGRES_SERVICE: "postgres-service"      # Matches your Service name
     POSTGRES_DB: "odc_db"                    # From your manifest
     POSTGRES_USER: "postgres"                # From your manifest
