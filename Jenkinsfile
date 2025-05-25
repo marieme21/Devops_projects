@@ -47,6 +47,15 @@ pipeline {
 
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
+                sshagent(['minikube-ssh-key']) {
+                    sh '''
+                    # Pre-populate known_hosts
+                    ssh-keyscan 192.168.142.129 > ~/.ssh/known_hosts
+                    
+                    # Test connection
+                    ssh marieme@192.168.142.129 "minikube status"
+                    '''
+                }
                 script{
                     
                     // Verify connectivity
