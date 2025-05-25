@@ -3,7 +3,6 @@ pipeline {
 
     tools {
         terraform 'terraform'  // Must match tool name in Jenkins
-        ansible 'ansible'
     }
     
     environment {
