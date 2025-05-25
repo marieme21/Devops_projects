@@ -62,8 +62,8 @@ pipeline {
             steps {
                 sshagent(['minikube-ssh-key']) {
                     dir('ansible') {
-                        sh '''
-                            ansible-playbook django-migration-job.yml
+                        sh ''' 
+                            ansiblePlaybook(credentialsId: 'minikube-ssh-key', inventory: 'inventories/a/hosts', playbook: 'django-migration-job.yml')
                         '''
                     }
                 }
