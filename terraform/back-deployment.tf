@@ -57,6 +57,7 @@ resource "kubernetes_service" "backend" {
 
     port {
       name        = "http"
+      protocol    = "TCP"
       port        = 8000
       target_port = 8000
       node_port   = 30083
