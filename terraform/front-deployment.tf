@@ -30,7 +30,7 @@ resource "kubernetes_deployment" "frontend" {
 
           env {
             name  = "API_URL"
-            value = "http://backend-service:8000/"  # Updated to use K8s service DNS
+            value = "http://api.local/"  # Updated to use K8s service DNS
           }
         }
       }
