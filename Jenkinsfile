@@ -48,12 +48,6 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 sshagent(['minikube-ssh-key']) {
-                    sh '''
-                        echo "--- Testing SSH Key ---"
-                        ssh-add -L || ssh-add -l
-                        ssh marieme@${MINIKUBE_IP} "minikube status"
-                        
-                    '''
                     dir('terraform') {
                         sh '''
                         terraform init
