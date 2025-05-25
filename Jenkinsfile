@@ -51,13 +51,16 @@ pipeline {
                     sh '''
                         echo "--- Testing SSH Key ---"
                         ssh-add -L || ssh-add -l
-                        ssh -vvv marieme@192.168.142.129 "minikube status"
+                        ssh marieme@${MINIKUBE_IP} "minikube status"
+                        
                     '''
-                    /*# Test key loading
-                    ssh-add -l
-                    
-                    # Connect with verbose output
-                    ssh -vvv marieme@192.168.142.129 "minikube status"*/
+                    dir('terraform') {
+                        sh '''
+                        terraform init
+                        terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
+                        '''
+                        //terraform apply -auto-approve -var="minikube_ip=${MINIKUBE_IP}"
+                    }
                 }
                 /*script{
                     
@@ -68,7 +71,7 @@ pipeline {
                     kubectl config set-cluster minikube-remote --server=http://${MINIKUBE_IP}:8001
                     kubectl config set-context minikube-remote --cluster=minikube-remote --user=minikube
                     kubectl config use-context minikube-remote
-                    """
+                    """*
                     
                     // Run Terraform
                     dir('terraform') {
