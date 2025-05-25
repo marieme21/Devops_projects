@@ -49,14 +49,14 @@ pipeline {
             steps {
                 sshagent(['minikube-ssh-key']) {
                     sh '''
-                    # Pre-populate known_hosts
-                    ssh-keyscan 192.168.142.129 > ~/.ssh/known_hosts
+                    # Test key loading
+                    ssh-add -l
                     
-                    # Test connection
-                    ssh marieme@192.168.142.129 "minikube status"
+                    # Connect with verbose output
+                    ssh -vvv marieme@192.168.142.129 "minikube status"
                     '''
                 }
-                script{
+                /*script{
                     
                     // Verify connectivity
                     sh """
@@ -77,7 +77,7 @@ pipeline {
                     }
                     // 3. Verify deployment
                     sh 'kubectl get pods -o wide'
-                }
+                }*/
             }
         }
 
