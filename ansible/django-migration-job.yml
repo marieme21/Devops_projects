@@ -8,17 +8,7 @@
     POSTGRES_USER: "postgres"                # From your manifest
     POSTGRES_PASSWORD: "zou123"              # From your manifest
     
-  tasks:
-    - name: Wait for PostgreSQL to be ready
-      community.kubernetes.k8s_exec:
-        kubeconfig: "~/.kube/config"
-        pod: "postgres-*"  # Match your Postgres pod name
-        command: "pg_isready -U {{ POSTGRES_USER }} -h {{ POSTGRES_SERVICE }}"
-      register: pg_ready
-      until: pg_ready.stdout == POSTGRES_SERVICE + ":5432 - accepting connections"
-      retries: 10
-      delay: 5
-    
+  tasks:  
     - name: Create Kubernetes Job for Django migrations
       community.kubernetes.k8s:
         kubeconfig: "~/.kube/config"  # Minikube config path
