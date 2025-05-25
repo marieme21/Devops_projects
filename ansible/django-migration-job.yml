@@ -10,18 +10,6 @@
     POSTGRES_PASSWORD: "zou123"              # From your manifest
     
   tasks:
-
-    - name: Ensure pip3 is installed
-      ansible.builtin.apt:
-        name: python3-pip
-        state: present
-      when: ansible_os_family == 'Debian'
-      
-    - name: Ensure Python Kubernetes module is installed
-      ansible.builtin.pip:
-        name: kubernetes
-        executable: pip3
-
     - name: Create Kubernetes Job for Django migrations
       community.kubernetes.k8s:
         kubeconfig: "~/.kube/config"  # Minikube config path
