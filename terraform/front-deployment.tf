@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "frontend" {
       spec {
         container {
           name  = "frontend"
-          image = "marieme21/projetfilrouge_frontend:latest"  # Explicit tag recommended
+          image = "marieme21/projetfilrouge_frontend"  # Explicit tag recommended
 
           port {
             container_port = 80
