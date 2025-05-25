@@ -62,7 +62,7 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     //credentialsId: 'minikube-ssh-key',
-                    inventory: 'inventories/a/hosts',
+                    inventory: 'ansible/inventory.ini',
                     playbook: 'ansible/django-migration-job.yml'
                 )
             }
