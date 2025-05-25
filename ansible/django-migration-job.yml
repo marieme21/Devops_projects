@@ -8,7 +8,12 @@
     POSTGRES_USER: "postgres"                # From your manifest
     POSTGRES_PASSWORD: "zou123"              # From your manifest
     
-  tasks:  
+  tasks:
+    - name: Ensure Python Kubernetes module is installed
+      ansible.builtin.pip:
+        name: kubernetes
+        executable: pip3
+
     - name: Create Kubernetes Job for Django migrations
       community.kubernetes.k8s:
         kubeconfig: "~/.kube/config"  # Minikube config path
