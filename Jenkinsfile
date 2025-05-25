@@ -49,12 +49,13 @@ pipeline {
             steps {
                 sshagent(['minikube-ssh-key']) {
                     sh '''
-                    # Test key loading
+                        ssh -o StrictHostKeyChecking=no user@host "your-remote-command"
+                    '''
+                    /*# Test key loading
                     ssh-add -l
                     
                     # Connect with verbose output
-                    ssh -vvv marieme@192.168.142.129 "minikube status"
-                    '''
+                    ssh -vvv marieme@192.168.142.129 "minikube status"*/
                 }
                 /*script{
                     
