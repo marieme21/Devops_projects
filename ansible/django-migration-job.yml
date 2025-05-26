@@ -38,20 +38,20 @@
                 restartPolicy: Never
             backoffLimit: 2  # Retry twice on failure
 
-    - name: Wait for Job completion
-      community.kubernetes.k8s_info:
-        kubeconfig: "~/.kube/config"
-        kind: Job
-        name: "django-migrate-{{ ansible_date_time.epoch }}"
-      register: job_status
-      until: job_status.resources[0].status.succeeded == 1
-      retries: 10
-      delay: 10  # Check every 10 seconds (max 100s wait)
+#    - name: Wait for Job completion
+ #     community.kubernetes.k8s_info:
+  #      kubeconfig: "~/.kube/config"
+   #     kind: Job
+    #    name: "django-migrate-{{ ansible_date_time.epoch }}"
+     # register: job_status
+      #until: job_status.resources[0].status.succeeded == 1
+      #retries: 10
+      #delay: 10  # Check every 10 seconds (max 100s wait)
 
-    - name: Delete the Job after completion
-      community.kubernetes.k8s:
-        kubeconfig: "~/.kube/config"
-        state: absent
-        kind: Job
-        name: "django-migrate-{{ ansible_date_time.epoch }}"
-      when: job_status.resources[0].status.succeeded == 1
+    #- name: Delete the Job after completion
+      #community.kubernetes.k8s:
+        #kubeconfig: "~/.kube/config"
+        #state: absent
+        #kind: Job
+        #name: "django-migrate-{{ ansible_date_time.epoch }}"
+      #when: job_status.resources[0].status.succeeded == 1
