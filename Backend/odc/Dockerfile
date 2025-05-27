@@ -10,6 +10,7 @@ COPY . /app
 # 4. Installer les dépendances
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install django-prometheus
 
 # 5. Exposer le port de Django
 EXPOSE 8000
