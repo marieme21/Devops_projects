@@ -1,0 +1,6 @@
+- name: Check Django /metrics endpoint
+  ansible.builtin.uri:
+    url: "http://{{ django_service_ip }}:8000/metrics"
+    return_content: yes
+  register: django_metrics
+  failed_when: django_metrics.status != 200
