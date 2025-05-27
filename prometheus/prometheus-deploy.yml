@@ -13,3 +13,21 @@
     --set grafana.enabled=true
   register: helm_install
   changed_when: "'deployed' in helm_install.stdout"
+  
+- name: Create ServiceMonitor for Django
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: monitoring.coreos.com/v1
+      kind: ServiceMonitor
+      metadata:
+        name: django-monitor
+        namespace: monitoring
+        labels:
+          release: prometheus  # Must match Helm release name
+      spec:
+        endpoints:
+          - port: web  # Matches Django service port name
+            interval: 30s
+        selector:
+          matchLabels:
+            app: django-backend  # Label of your Django service
