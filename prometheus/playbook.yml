@@ -1,0 +1,9 @@
+- hosts: localhost
+  roles:
+    - helm-setup
+    - prometheus-deploy
+  tasks:
+    - name: Ensure kubectl is configured
+      ansible.builtin.command: kubectl cluster-info
+      register: kube_check
+      failed_when: kube_check.rc != 0
