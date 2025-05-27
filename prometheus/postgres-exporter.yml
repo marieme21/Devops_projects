@@ -1,0 +1,17 @@
+- name: Deploy postgres-exporter
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: postgres-exporter
+        namespace: default
+      spec:
+        template:
+          spec:
+            containers:
+              - name: postgres-exporter
+                image: prometheuscommunity/postgres-exporter
+                env:
+                  - name: DATA_SOURCE_NAME
+                    value: "postgresql://{{ db_user }}:{{ db_password }}@postgres-service:5432/{{ db_name }}?sslmode=disable"
