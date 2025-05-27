@@ -32,10 +32,9 @@ pipeline {
                 sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
                 sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
             }
-        }
+        } 
         
-        
-        /*stage('Push images to Docker Hub') {
+        stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker_hub_creds', url: '']) {
                     sh 'docker push $BACKEND_IMAGE:latest'
@@ -43,7 +42,7 @@ pipeline {
                     sh 'docker push $MIGRATE_IMAGE:latest'
                 }
             }
-        }*/
+        }
 
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
@@ -61,9 +60,17 @@ pipeline {
         stage('Postgres DB migration') {
             steps {
                 ansiblePlaybook(
-                    //credentialsId: 'minikube-ssh-key',
                     inventory: 'ansible/inventory.ini',
                     playbook: 'ansible/django-migration-job.yml'
+                )
+            }
+        }
+
+        stage('Monitoring with Prometheus with ansible') {
+            steps {
+                ansiblePlaybook(
+                    inventory: 'ansible/inventory.ini',
+                    playbook: 'prometheus/playbook.yml'
                 )
             }
         }
