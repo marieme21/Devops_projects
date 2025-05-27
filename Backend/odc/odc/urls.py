@@ -19,5 +19,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include('profiles.urls'))
+    path('api/',include('profiles.urls')),
+    path('metrics/', exports.export_to_django_view)
 ]
