@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'odc.wsgi.application'
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.postgresql',
-        'ENGINE': 'django_prometheus.db.backends.postgresql'
+        'ENGINE': 'django_prometheus.db.backends.postgresql',
         'NAME': 'odc_db',
         'USER': 'postgres',
         'PASSWORD': 'zou123',
