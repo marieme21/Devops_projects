@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: minikube
   roles:
     - helm-setup
     - prometheus-deploy
