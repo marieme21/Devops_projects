@@ -75,6 +75,15 @@ pipeline {
             }
         }
 
+        stage('Expose backend service for Prometheus') {
+            steps {
+                ansiblePlaybook(
+                    inventory: 'ansible/inventory.ini',
+                    playbook: 'prometheus/playbook.yml'
+                )
+            }
+        }
+
         stage('Monitoring with Prometheus with ansible') {
             steps {
                 ansiblePlaybook(
