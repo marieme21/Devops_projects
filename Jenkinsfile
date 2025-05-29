@@ -47,7 +47,9 @@ pipeline {
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 sshagent(['minikube-ssh-key']) {
-                    sh 'kubectl proxy --address=0.0.0.0 --port=8001 --accept-hosts='.*''
+                    sh '''
+                        kubectl proxy --address=0.0.0.0 --port=8001 --accept-hosts='.*'
+                    '''
                     dir('terraform') {
                         sh '''
                         terraform init
