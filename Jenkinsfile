@@ -12,7 +12,7 @@ pipeline {
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
         // Set your Minikube host IP manually
         MINIKUBE_IP = "192.168.142.129"
-
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'
     }
 
     stages {
