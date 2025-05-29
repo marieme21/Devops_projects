@@ -10,6 +10,7 @@
     remote_src: yes
 
 - name: Install Helm binary
+  become: yes
   ansible.builtin.copy:
     src: "/tmp/linux-amd64/helm"
     dest: "/usr/local/bin/helm"
