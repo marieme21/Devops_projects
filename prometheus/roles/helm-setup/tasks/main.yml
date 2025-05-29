@@ -10,12 +10,17 @@
     remote_src: yes
 
 - name: Install Helm binary
-  become: yes
   ansible.builtin.copy:
     src: "/tmp/linux-amd64/helm"
-    dest: "/usr/local/bin/helm"
+    dest: "~/bin/helm"
     mode: '0755'
     remote_src: yes
+
+- name: Add ~/bin to PATH
+  lineinfile:
+    path: ~/.bashrc
+    line: 'export PATH="$HOME/bin:$PATH"'
+    create: yes
 
 - name: Add Prometheus Helm repo
   ansible.builtin.command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
