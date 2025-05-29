@@ -16,11 +16,10 @@
     mode: '0755'
     remote_src: yes
 
-- name: Add ~/bin to PATH
-  lineinfile:
-    path: ~/.bashrc
-    line: 'export PATH="$HOME/bin:$PATH"'
-    create: yes
+- name: Add ~/bin to current session PATH
+  shell: echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
+  args:
+    executable: /bin/bash
 
 - name: Add Prometheus Helm repo
   ansible.builtin.command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
