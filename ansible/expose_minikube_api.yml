@@ -1,0 +1,12 @@
+---
+- name: Configure Minikube API access for Jenkins
+  hosts: minikube
+  tasks:
+    - name: Ensure Minikube exposes API to Jenkins controller IP
+      command: |
+        kubectl proxy --address=0.0.0.0 --port=8001 --accept-hosts='.*' &
+        kubectl port-forward --address 0.0.0.0 svc/backend-service 8000:8000
+      async: 30  # Run in background
+      poll: 0     # Don't wait for completion
+      register: proxy_process
+      changed_when: false
