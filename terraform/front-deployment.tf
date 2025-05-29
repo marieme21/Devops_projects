@@ -36,6 +36,9 @@ resource "kubernetes_deployment" "frontend" {
       }
     }
   }
+  timeouts {
+    create = "5m"  # Wait up to 5 minutes for API operations
+  }
 }
 
 resource "kubernetes_service" "frontend" {
@@ -55,5 +58,8 @@ resource "kubernetes_service" "frontend" {
       target_port = 80
       node_port   = 30080  # Matches your original manifest
     }
+  }
+  timeouts {
+    create = "5m"  # Wait up to 5 minutes for API operations
   }
 }
