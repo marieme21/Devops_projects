@@ -1,5 +1,8 @@
-- name: Start kubectl proxy
-  command: kubectl port-forward --address 0.0.0.0 svc/backend-service 8000:8000 &
-  async: 30  # Allow 30s for the command to start
-  poll: 0    # Don’t check status afterward
-  register: proxy_handle
+---
+- hosts: minikube
+  tasks:
+    - name: Start kubectl proxy
+      command: kubectl port-forward --address 0.0.0.0 svc/backend-service 8000:8000 &
+      async: 30  # Allow 30s for the command to start
+      poll: 0    # Don’t check status afterward
+      register: proxy_handle
