@@ -44,6 +44,15 @@ pipeline {
             }
         }
 
+        stage('Expose minikube for jenkins') {
+            steps {
+                ansiblePlaybook(
+                    inventory: 'ansible/inventory.ini',
+                    playbook: 'ansible/expose_minikube_api.yml'
+                )
+            }
+        }
+
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
                 sshagent(['minikube-ssh-key']) {
@@ -62,16 +71,6 @@ pipeline {
                 ansiblePlaybook(
                     inventory: 'ansible/inventory.ini',
                     playbook: 'ansible/django-migration-job.yml'
-                )
-            }
-        }
-
-
-        stage('Expose minikube for jenkins') {
-            steps {
-                ansiblePlaybook(
-                    inventory: 'ansible/inventory.ini',
-                    playbook: 'ansible/expose_minikube_api.yml'
                 )
             }
         }
