@@ -79,7 +79,7 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     inventory: 'ansible/inventory.ini',
-                    playbook: 'prometheus/playbook.yml'
+                    playbook: 'prometheus/expose_backend_for_prometheus.yml'
                 )
             }
         }
