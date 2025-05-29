@@ -60,9 +60,6 @@ resource "kubernetes_deployment" "postgres" {
       }
     }
   }
-  timeouts {
-    create = "5m"  # Wait up to 5 minutes for API operations
-  }
 }
 
 # PostgreSQL Service
@@ -82,8 +79,5 @@ resource "kubernetes_service" "postgres" {
     }
 
     type = "ClusterIP"  # Default - only accessible within cluster
-  }
-  timeouts {
-    create = "5m"  # Wait up to 5 minutes for API operations
   }
 }
