@@ -43,6 +43,9 @@ resource "kubernetes_deployment" "backend" {
       }
     }
   }
+  timeouts {
+    create = "5m"  # Wait up to 5 minutes for API operations
+  }
 }
 
 resource "kubernetes_service" "backend" {
@@ -64,5 +67,8 @@ resource "kubernetes_service" "backend" {
     }
 
     type = "NodePort"
+  }
+  timeouts {
+    create = "5m"  # Wait up to 5 minutes for API operations
   }
 }
