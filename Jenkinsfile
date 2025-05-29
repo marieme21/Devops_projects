@@ -44,14 +44,14 @@ pipeline {
             }
         }
 
-        stage('Expose minikube for jenkins') {
+        /*stage('Expose minikube for jenkins') {
             steps {
                 ansiblePlaybook(
                     inventory: 'ansible/inventory.ini',
                     playbook: 'ansible/expose_minikube_api.yml'
                 )
             }
-        }
+        }*/
 
         stage('Déploiement sur Kubernetes avec terraform') {
             steps {
